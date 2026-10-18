@@ -30,13 +30,29 @@ int esta_activa(const Idol *i){
     return i->energia>0?1:0;
 
 }
+int colaboracion (Idol *a, Idol *b){
+    if(a == NULL || b == NULL){
+         return 0;
+    }
+    else{
+        a->popularidad+=10;
+        b->popularidad+=10;
+        a->energia=limitar(a->energia-15,0, a->energia_max);
+        b->energia=limitar(b->energia-15,0, b->energia_max);
+        printf ("nombre: %s\n, nombre:%s\n,", a->nombre, b->nombre);
+        return 1;
+    }
+    }
 
 int main(){
     Idol uno ={"Mingyu",100,100,100,10000};
+    Idol dos ={"Jun",60,70,100,999};
 
     Idol *p=&uno;
+    Idol *q=&dos;
+    colaboracion(&uno, &uno);
     
-    ensayar(&uno);
+    //ensayar(&uno);
     /*ensayar(&uno);
     ensayar(&uno);
     ensayar(&uno);
@@ -48,7 +64,7 @@ int main(){
     descansar(&uno);
     descansar(&uno);
     descansar(&uno);*/
-    descansar(&uno);
+    //descansar(&uno);
     esta_activa(&uno);
     p-> energia=limitar(p->energia, 0, p->energia_max);
     printf("%d \n ", uno.fans);
