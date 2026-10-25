@@ -1,12 +1,24 @@
 #include <stdio.h>
+
+typedef struct
+{
+    char nombre[30];
+    int bonus;
+    int vigencia;
+}cancion;
+
 typedef struct{
     char nombre[30];
     int popularidad;
     int energia;
     int energia_max;
     int fans;
+    cancion *cancion;
 
 }Idol;
+
+
+
 void mostrar(const Idol *i){
     printf("nombre: %s \n, pop[ularidad: %d \n, energia: %d \n, energia maxima: %d \n, fans: %d \n",
     i->nombre, i->popularidad, i->energia, i->energia_max, i->fans);
@@ -31,7 +43,7 @@ int esta_activa(const Idol *i){
 
 }
 int colaboracion (Idol *a, Idol *b){
-    if(a == NULL || b == NULL){
+    if(a == NULL || b == NULL ||a == b){
          return 0;
     }
     else{
@@ -44,9 +56,49 @@ int colaboracion (Idol *a, Idol *b){
     }
     }
 
+void asignar_cancion(Idol *i, cancion*c){
+    if (i==NULL){
+        return;
+    }
+    i->cancion=c;
+}
+
 int main(){
-    Idol uno ={"Mingyu",100,100,100,10000};
-    Idol dos ={"Jun",60,70,100,999};
+    cancion discos[2]={
+        {"hello",10,3},{"loser",5,6}
+    };
+
+    Idol uno ={"Mingyu",100,100,100,10000,NULL};
+    Idol dos ={"Jun",60,70,100,999,NULL};
+
+    asignar_cancion(&uno,&discos[0]);
+    asignar_cancion(&dos, &discos[0]);
+
+    colaboracion(&uno, &uno);
+    colaboracion(NULL, &dos);
+    colaboracion(&uno, &dos);
+    mostrar(&uno);
+    mostrar(&dos);
+
+    Idol *turno=&uno;
+    Idol *otra=&dos;
+    Idol *temp=NULL;
+
+while (esta_activa(turno)&& esta_activa(otra)){
+    ensayar(turno);
+    printf("turno %s %d\n",turno->nombre,turno->energia);
+
+    temp=turno;
+    turno=otra;
+    otra=temp;
+}
+    if(esta_activa(turno)){
+        printf("quedo con energia %s \n",turno->nombre );
+    }else{
+        printf("queda con energia %s \n", otra->nombre);
+    }
+
+    
 
     Idol *p=&uno;
     Idol *q=&dos;
