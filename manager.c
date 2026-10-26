@@ -140,7 +140,7 @@ void dar_concierto(Grupo *g){
         if(esta_activa(p)){
             p->fans+=popularidad_total(p)* 10;
             p->energia=limitar(p->energia-30,0,p->energia_max);
-            if(p->cancion->vigencia>0){
+            if(p->cancion != NULL && p->cancion->vigencia>0){
                 p->cancion->vigencia--;
                 if(p->cancion->vigencia==0){
                     printf("La cancion %s ya no tiene vigenia\n", p->cancion->nombre);
@@ -171,11 +171,13 @@ int main(){
     asignar_cancion(&g.miembros[1], &discos[0]);
     popularidad_total(&g.miembros[0]);
     
+     printf("Antes del concierto\n");
+    mostrar_grupo(&g);
     printf("Empieza el concierto\n");
-    dar_concierto(&g);
-    printf("Energia total: %d\n", g.miembros[0].energia);    
+    dar_concierto(&g); 
     printf("Después del concierto\n");
     mostrar_grupo(&g);
+     printf("Energia total: %d\n", g.miembros[0].energia);   
     printf("fans: %d\n", g.miembros[0].fans);
 
     printf("Energia total: %d\n", g.miembros[0].energia);    printf("fans: %d\n", g.miembros[0].fans);
