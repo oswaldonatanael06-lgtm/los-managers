@@ -127,8 +127,27 @@ Idol *idol_mas_cansado(Grupo *g){
         if(p->energia<mas_cansado->energia){
             mas_cansado=p;
         }
+
     }
     return mas_cansado;
+}
+
+void dar_concierto(Grupo *g){
+    if(g==NULL){
+        return;
+    }
+    for(Idol *p=g->miembros; p<g->miembros+g->n; p++){
+        if(esta_activa(p)){
+            p->fans+=popularidad_total(p)* 10;
+            p->energia=limitar(p->energia-30,0,p->energia_max);
+            if(p->cancion->vigencia>0){
+                p->cancion->vigencia--;
+                if(p->cancion->vigencia==0){
+                    printf("La cancion %s ya no tiene vigenia\n", p->cancion->nombre);
+            }
+        }
+    }
+}
 }
 int main(){
     cancion discos[2]={
@@ -151,6 +170,16 @@ int main(){
     asignar_cancion(&g.miembros[0],&discos[0]);
     asignar_cancion(&g.miembros[1], &discos[0]);
     popularidad_total(&g.miembros[0]);
+    
+    printf("Empieza el concierto\n");
+    dar_concierto(&g);
+    printf("Energia total: %d\n", g.miembros[0].energia);    
+    printf("Después del concierto\n");
+    mostrar_grupo(&g);
+    printf("fans: %d\n", g.miembros[0].fans);
+
+    printf("Energia total: %d\n", g.miembros[0].energia);    printf("fans: %d\n", g.miembros[0].fans);
+
 
     colaboracion(&g.miembros[0], &g.miembros[0]);
     colaboracion(NULL, &g.miembros[1]);
