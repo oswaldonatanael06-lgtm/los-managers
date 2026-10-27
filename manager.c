@@ -175,13 +175,21 @@ int main(){
     mostrar_grupo(&g);
     printf("Empieza el concierto\n");
     dar_concierto(&g); 
-    printf("Después del concierto\n");
+    printf("Despues del concierto\n");
     mostrar_grupo(&g);
-     printf("Energia total: %d\n", g.miembros[0].energia);   
+    printf("Energia total: %d\n", g.miembros[0].energia);   
     printf("fans: %d\n", g.miembros[0].fans);
 
-    printf("Energia total: %d\n", g.miembros[0].energia);    printf("fans: %d\n", g.miembros[0].fans);
+    printf("\nPrueba HU-22: arreglo y indice\n");
+    Idol *a = g.miembros;
+    Idol *b = &g.miembros[0];
+    printf("Direccion a (desde arreglo): %p\n", (void*)a);
+    printf("Direccion b (desde indice): %p\n", (void*)b);
 
+    // HU‑22 equivalencia arreglo‑apuntador
+    // g.miembros      = &g.miembros[0]
+    // g.miembros + i  = &g.miembros[i]
+    // *(g.miembros + i)= g.miembros[i]
 
     colaboracion(&g.miembros[0], &g.miembros[0]);
     colaboracion(NULL, &g.miembros[1]);
