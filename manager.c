@@ -144,11 +144,38 @@ void dar_concierto(Grupo *g){
                 p->cancion->vigencia--;
                 if(p->cancion->vigencia==0){
                     printf("La cancion %s ya no tiene vigenia\n", p->cancion->nombre);
+                }
             }
         }
     }
 }
+
+void mostrar_cancion_lider(const Grupo *g){
+    if(g==NULL){
+        printf("El grupo no existe\n");
+        return;
+    }
+    if(g->lider==NULL){
+        printf("El grupo no tiene lider\n");
+        return;
+    }
+    if(g->lider->cancion==NULL){
+        printf("El lider no tiene cancion\n");
+        return;
+    }
+    printf("Cancion del lider: %s\n", g->lider->cancion->nombre);
 }
+void preparar_presentacion(Grupo *g){
+    if(g==NULL){
+        return;
+    }
+    for(Idol *p=g->miembros; p<g->miembros+g->n; p++){
+        if(esta_activa(p)){
+            p->energia=limitar(p->energia-10,0,p->energia_max);
+        }
+    }   
+}
+
 int main(){
     cancion discos[2]={
         {"HOME;RUN",10,3},{"HOT",5,6}
@@ -156,7 +183,14 @@ int main(){
     
     Grupo g ={"seventeen", {{"Mingyu",100,100,100,10000,NULL}, {"Jun",60,70,100,999,NULL}, {"The8",50,40,100,998,NULL}}, 3, NULL};
     printf("lider: %s\n",g.lider->nombre);
+    mostrar_cancion_lider(&g);
+    preparar_presentacion(&g);
+    printf("lider: %s\n",g.lider->nombre);
+    printf("activos: %d\n", contar_activos(&g));
     cambiar_lider(&g, &g.miembros[0]);
+    preparar_presentacion(&g);
+    printf("lider: %s\n",g.lider->nombre);
+    printf("activos: %d\n", contar_activos(&g));
     printf("lider: %s\n",g.lider->nombre);
     printf("fans: %d\n",g.lider->fans);
     mostrar_grupo(&g);
@@ -167,15 +201,28 @@ int main(){
     }
     printf("El idol mas cansado es: %s\n", mas_cansado->nombre);
     printf("Energia del mas cansado: %d\n", mas_cansado->energia);
+    mostrar_cancion_lider(&g);
     asignar_cancion(&g.miembros[0],&discos[0]);
+    preparar_presentacion(&g);
+    printf("lider: %s\n",g.lider->nombre);
+    printf("activos: %d\n", contar_activos(&g));
+    preparar_presentacion(&g);
+    preparar_presentacion(&g);
+    preparar_presentacion(&g);
+    preparar_presentacion(&g);
+    preparar_presentacion(&g);
+    printf("lider: %s\n",g.lider->nombre);
+    printf("activos: %d\n", contar_activos(&g));
+    printf("Energia de los miembros: %d, %d, %d\n", g.miembros[0].energia, g.miembros[1].energia, g.miembros[2].energia);
+    mostrar_cancion_lider(&g);
     asignar_cancion(&g.miembros[1], &discos[0]);
     popularidad_total(&g.miembros[0]);
     
-     printf("Antes del concierto\n");
+     printf(" --Antes del concierto-- \n");
     mostrar_grupo(&g);
-    printf("Empieza el concierto\n");
+    printf(" --Empieza el concierto-- \n");
     dar_concierto(&g); 
-    printf("Despues del concierto\n");
+    printf(" --Despues del concierto-- \n");
     mostrar_grupo(&g);
     printf("Energia total: %d\n", g.miembros[0].energia);   
     printf("fans: %d\n", g.miembros[0].fans);
@@ -185,6 +232,7 @@ int main(){
     Idol *b = &g.miembros[0];
     printf("Direccion a (desde arreglo): %p\n", (void*)a);
     printf("Direccion b (desde indice): %p\n", (void*)b);
+    mostrar_cancion_lider(&g);
 
     // HU‑22 equivalencia arreglo‑apuntador
     // g.miembros      = &g.miembros[0]
@@ -218,7 +266,8 @@ while (esta_activa(turno)&& esta_activa(otra)){
     
 
     Idol *p=&g.miembros[0];
-    Idol *q=&g.miembros[1];
+    ///Idol *q=&g.miembros[1];
+
     colaboracion(&g.miembros[0], &g.miembros[0]);
     
     ensayar(&g.miembros[0]);
